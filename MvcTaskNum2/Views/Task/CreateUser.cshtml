@@ -1,0 +1,18 @@
+﻿<div class="container">
+    <div class="row">
+        <div class="col-lg-8 col-md-10">
+            <h1>Create New Todo items</h1>
+            <h4>Enter your name</h4>
+
+            <form method="post" asp-controller="Task" asp-action="CreateUser" class="mt-3">
+                @Html.AntiForgeryToken()
+                <div class="mb-3">
+                    <input name="name" placeholder="enter your name" class="form-control" />
+                </div>
+                <button type="submit" class="btn btn-info">Create Todo User</button>
+            </form>
+
+
+        </div>
+    </div>
+</div>
