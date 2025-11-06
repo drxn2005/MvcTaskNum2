@@ -1,10 +1,10 @@
-﻿@model IEnumerable<TodoTask>
+﻿@model IEnumerable<MvcTaskNum2.Models.TodoTask>
 @{
     var userName = ViewBag.UserName as string;
 }
-<h1 class="mb-1">Welcome @(string.IsNullOrWhiteSpace(userName) ? "" : userName)</h1>
 
 <div class="container py-4">
+    <h1 class="mb-1">Welcome @(string.IsNullOrWhiteSpace(userName) ? "" : userName)</h1>
     <p class="text-muted">Your Todo List is ready</p>
 
     <a asp-controller="Task" asp-action="Create" class="btn btn-primary mb-3">Create</a>
@@ -16,7 +16,7 @@
                 <th>Description</th>
                 <th>Deadline</th>
                 <th>File</th>
-                <th style="width:160px;">Action</th>
+                <th style="width:210px;">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -26,28 +26,33 @@
                 {
                     <tr>
                         <td>@item.Title</td>
-                        <td>@item.Description</td>
+                        <td class="text-truncate" style="max-width:320px">@item.Description</td>
                         <td>@item.DeadLine.ToString("yyyy-MM-dd")</td>
                         <td>
                             @if (!string.IsNullOrEmpty(item.FilePath))
                             {
-                                <a href="@Url.Content(item.FilePath)" target="_blank">Download</a>
+                                <a href="@item.FilePath" target="_blank">Download</a>
                             }
                         </td>
                         <td>
-                            <a asp-controller="Task" asp-action="Edit" asp-route-id="@item.Id"
-                               class="btn btn-outline-primary btn-sm">Edit</a>
-                            <a asp-controller="Task" asp-action="Delete" asp-route-id="@item.Id"
-                               class="btn btn-outline-danger btn-sm ms-1">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-secondary btn-sm ms-1">Details</a>
+
+                            <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger btn-sm ms-1"
+                                        onclick="return confirm('Delete this item?');">
+                                    Delete
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 }
             }
             else
             {
-                <tr>
-                    <td colspan="5" class="text-center text-muted">No items yet.</td>
-                </tr>
+                <tr><td colspan="5" class="text-center text-muted">No items yet.</td></tr>
             }
         </tbody>
     </table>
